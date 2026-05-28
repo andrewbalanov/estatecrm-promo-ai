@@ -1,0 +1,140 @@
+.rmodal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(6, 5, 14, 0.7);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+.rmodal {
+  width: 440px;
+  max-width: 100%;
+  background: linear-gradient(180deg, rgba(24, 20, 46, 0.96) 0%, rgba(13, 11, 26, 0.96) 100%);
+  border: 1px solid rgba(138, 107, 255, 0.28);
+  border-radius: 24px;
+  padding: 44px 40px 36px;
+  text-align: center;
+  position: relative;
+  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(182, 166, 255, 0.05) inset;
+  animation: rmodalIn 0.25s ease-out;
+}
+
+@keyframes rmodalIn {
+  from { opacity: 0; transform: translateY(20px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.rmodal__close {
+  position: absolute;
+  top: 16px;
+  right: 18px;
+  width: 32px;
+  height: 32px;
+  color: rgba(255, 255, 255, 0.55);
+  font-size: 28px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s;
+}
+
+.rmodal__close:hover {
+  color: #fff;
+}
+
+.rmodal__icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+  font-weight: 700;
+  margin: 0 auto 22px;
+}
+
+.rmodal__icon--ok {
+  background: var(--accent-grad-2);
+  color: #fff;
+  box-shadow: 0 12px 36px rgba(138, 107, 255, 0.45);
+}
+
+.rmodal__icon--err {
+  background: rgba(229, 57, 53, 0.15);
+  border: 1px solid rgba(229, 57, 53, 0.45);
+  color: #ff6b66;
+}
+
+.rmodal__title {
+  font-family: 'Unbounded', sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.3px;
+  margin-bottom: 12px;
+  color: #fff;
+}
+
+.rmodal__text {
+  font-size: 15px;
+  line-height: 1.55;
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: 26px;
+}
+
+.rmodal__btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background: var(--accent-grad-2);
+  color: #fff;
+  font-family: 'Geologica', sans-serif;
+  font-size: 17px;
+  font-weight: 700;
+  padding: 18px 24px;
+  border-radius: 14px;
+  box-shadow: 0 14px 36px rgba(138, 107, 255, 0.32);
+  transition: transform 0.18s ease;
+}
+
+.rmodal__btn:hover {
+  transform: translateY(-2px);
+}
+
+.rmodal__btn-arrow {
+  font-size: 19px;
+}
+
+.rmodal__btn--ghost {
+  background: transparent;
+  color: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(138, 107, 255, 0.25);
+  box-shadow: none;
+  margin-top: 12px;
+  font-weight: 500;
+  font-size: 15px;
+  padding: 14px 24px;
+}
+
+.rmodal__btn--ghost:hover {
+  background: rgba(138, 107, 255, 0.08);
+  transform: none;
+}
+
+@media (max-width: 768px) {
+  .rmodal {
+    padding: 38px 24px 30px;
+  }
+  .rmodal__title {
+    font-size: 20px;
+  }
+}
