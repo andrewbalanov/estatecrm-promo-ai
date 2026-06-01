@@ -125,7 +125,7 @@ function buildUserEmailHtml({ name }) {
 
 const FORM_LABELS = {
   consult: 'Форма "Записаться на консультацию"',
-  report: 'Форма "Скачать исследование"',
+  report: 'Форма "Скачать исследование AI"',
   bottom: 'Форма в нижнем блоке',
 }
 

@@ -42,7 +42,7 @@ function DownloadSection() {
             PHONE: [{ VALUE: form.phone, VALUE_TYPE: 'WORK' }],
             SOURCE_ID: 'UC_RP7YY3',
             UF_CRM_1760704782049: 'https://promo.estatecrm.io/ai/',
-            UF_CRM_1738824489: 'Скачать исследование',
+            UF_CRM_1738824489: 'Скачать исследование AI',
             COMMENTS: 'Источник: Лендинг «AI в девелопменте» — форма скачивания исследования',
           },
         }),
@@ -118,7 +118,7 @@ function DownloadSection() {
         <div className="dl__right">
           <div className="dl__card">
             <div className="dl__card-head">
-              <div className="dl__card-title">AI в девелопменте · 2026</div>
+              <div className="dl__card-title">Скачать исследование AI</div>
               <div className="dl__card-meta">EstateCRM · 12 стр. · 4 МБ · PDF</div>
             </div>
 
