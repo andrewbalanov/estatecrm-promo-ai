@@ -25,8 +25,8 @@ function HeroSection({ onGetPdf, onNav }) {
           </h1>
 
           <p className="hero__lede">
-            Карта рынка AI в российском девелопменте на 2026.<br />
-            Конкретные цифры, кейсы застройщиков и алгоритм внедрения AI за 9 шагов.
+            Карта рынка AI в российском девелопменте<br className="mobile-only" /> на 2026.<br />
+            Конкретные цифры, кейсы застройщиков <br className="mobile-only" />и алгоритм внедрения AI.
           </p>
 
           <div className="hero__stats" id="stats">

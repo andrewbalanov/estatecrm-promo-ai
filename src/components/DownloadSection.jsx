@@ -109,7 +109,7 @@ function DownloadSection() {
             <span className="h2-accent">исследование</span>
           </h2>
           <p className="dl__lede">
-            PDF придёт на email в течение минуты. В файле собрана
+            PDF придёт на email <br className="mobile-only" />в течение минуты. В файле собрана
             актуальная аналитика рынка на 2026 год, кейсы застройщиков
             и алгоритм для успешного запуска AI.
           </p>

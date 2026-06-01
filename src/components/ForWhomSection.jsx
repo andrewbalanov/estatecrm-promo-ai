@@ -3,8 +3,16 @@ import './ForWhomSection.css'
 
 const ROLES = [
   {
-    title: 'Коммерческий директор / директор по продажам',
-    text: 'Покажем, как ведущие застройщики получают 3–5% к доходности своих проектов.',
+    title: (
+      <>
+        Коммерческий директор / директор <br className="mobile-only" />по продажам
+      </>
+    ),
+    text: (
+      <>
+        Покажем, как ведущие застройщики получают 3{'–'}5% к доходности своих проектов.
+      </>
+    ),
   },
   {
     title: 'Собственник / CEO девелоперской компании',
@@ -27,20 +35,22 @@ function ForWhomSection() {
           <div className="section-label">
             <span>ДЛЯ КОГО</span>
             <div className="section-label__line" />
-            <div className="section-label__arrow">▶</div>
+            <div className="section-label__arrow" aria-hidden="true" />
           </div>
           <h2 className="h2">
-            Если вы<br />отвечаете за<br />
+            Если вы<br />
+            отвечаете<span className="mobile-only"> за</span><br />
+            <span className="desktop-only">за </span>
             <span className="h2-accent">рост и эффективность</span>
           </h2>
           <p className="forwhom__lede">
-            Исследование будет полезно для тех, кто принимает решения о внедрении AI.
+            Исследование будет полезно для тех,<br />кто принимает решения о внедрении AI.
           </p>
         </div>
 
         <div className="forwhom__right">
-          {ROLES.map((r) => (
-            <div className="forwhom__row" key={r.title}>
+          {ROLES.map((r, i) => (
+            <div className="forwhom__row" key={i}>
               <div className="forwhom__check">✓</div>
               <div>
                 <div className="forwhom__row-title">{r.title}</div>

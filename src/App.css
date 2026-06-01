@@ -27,8 +27,12 @@
 }
 
 .section-label__arrow {
-  color: #8a6bff;
-  font-size: 14px;
+  display: inline-block;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 6px 0 6px 9px;
+  border-color: transparent transparent transparent #8a6bff;
   transform: translateX(-12px);
 }
 
@@ -52,6 +56,14 @@
   padding-right: 0.05em;
 }
 
+/* Mobile / desktop visibility helpers (inline) */
+.mobile-only {
+  display: none;
+}
+.desktop-only {
+  display: inline;
+}
+
 @media (max-width: 768px) {
   .section-label {
     font-size: 13px;
@@ -61,5 +73,11 @@
   }
   .section-label__line {
     flex: 1 1 auto;
+  }
+  .mobile-only {
+    display: inline;
+  }
+  .desktop-only {
+    display: none;
   }
 }
