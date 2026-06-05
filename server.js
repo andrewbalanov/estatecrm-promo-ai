@@ -37,7 +37,10 @@ const transporter = nodemailer.createTransport({
   },
 })
 
-function buildEmailHtml({ name, company, email, phone, consent, marketing, url, label }) {
+function buildEmailHtml({ name, company, email, phone, consent, marketing, url, label, utm }) {
+  const utmStr = utm && Object.keys(utm).length
+    ? Object.entries(utm).map(([k, v]) => `${k}: ${v}`).join('<br>')
+    : '—'
   const fields = [
     ...(label ? [{ label: 'Форма', value: label }] : []),
     { label: 'Имя', value: name },
@@ -46,6 +49,7 @@ function buildEmailHtml({ name, company, email, phone, consent, marketing, url, 
     { label: 'Телефон', value: phone },
     { label: 'Согласие', value: consent ? 'Согласие на обработку персональных данных' : 'Не дано' },
     { label: 'Рассылка', value: marketing ? 'Хочу получать email с новыми кейсами, рекламой и быть в курсе важных событий' : 'Отказ от рассылки' },
+    { label: 'UTM-метки', value: utmStr },
     { label: 'URL', value: `<a href="${url}" style="color: #6d5cff; text-decoration: none;">${url}</a>` },
   ]
 
@@ -130,13 +134,14 @@ const FORM_LABELS = {
 }
 
 const sendEmailHandler = async (req, res) => {
-  const { name, company, email, phone, consent, marketing, formType } = req.body
+  const { name, company, email, phone, consent, marketing, formType, url, utm } = req.body
 
   if (!name || !company || !email || !phone) {
     return res.status(400).json({ error: 'Missing required fields' })
   }
 
-  const pageUrl = req.headers.referer || 'https://promo.estatecrm.io/ai/'
+  // Реальный URL с метками из тела запроса; referer — запасной вариант.
+  const pageUrl = url || req.headers.referer || 'https://promo.estatecrm.io/ai/'
   const label = FORM_LABELS[formType] || FORM_LABELS.consult
 
   try {
@@ -144,7 +149,7 @@ const sendEmailHandler = async (req, res) => {
       from: '"EstateCRM - Sales" <sales@estatecrm.io>',
       to: 'sales@estatecrm.io',
       subject: `Новая заявка: Лендинг "AI в девелопменте" — ${label}`,
-      html: buildEmailHtml({ name, company, email, phone, consent, marketing, url: pageUrl, label }),
+      html: buildEmailHtml({ name, company, email, phone, consent, marketing, url: pageUrl, label, utm }),
     })
 
     // Для формы скачивания — отправляем пользователю письмо со ссылкой на PDF (best-effort).

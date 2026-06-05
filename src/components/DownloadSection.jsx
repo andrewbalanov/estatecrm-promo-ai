@@ -1,14 +1,47 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import ResultModal from './ResultModal'
 import './DownloadSection.css'
 
 const BITRIX_WEBHOOK = 'https://tracebs.bitrix24.ru/rest/2/7det75s26t8s9sz6/'
 const PDF_URL = `${import.meta.env.BASE_URL}files/issledovanie-ai-v-developmente-2026.pdf`
 
+// Стандартные UTM-поля Битрикса. Ключ запроса (UTM_SOURCE) → query-параметр (utm_source).
+const UTM_KEYS = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term']
+const UTM_STORAGE_KEY = 'estatecrm_utm'
+
+// Захватываем UTM на ПЕРВОМ заходе и сохраняем в localStorage: если посетитель
+// уйдёт по якорю или метки слетят при навигации — они не потеряются к сабмиту.
+function captureUtm() {
+  if (typeof window === 'undefined') return {}
+  const params = new URLSearchParams(window.location.search)
+  const fromUrl = {}
+  UTM_KEYS.forEach((k) => {
+    const v = params.get(k)
+    if (v) fromUrl[k] = v
+  })
+  if (Object.keys(fromUrl).length > 0) {
+    try {
+      localStorage.setItem(UTM_STORAGE_KEY, JSON.stringify(fromUrl))
+    } catch (_) {}
+    return fromUrl
+  }
+  try {
+    return JSON.parse(localStorage.getItem(UTM_STORAGE_KEY) || '{}')
+  } catch (_) {
+    return {}
+  }
+}
+
 function DownloadSection() {
   const [form, setForm] = useState({ name: '', company: '', phone: '', email: '' })
   const [status, setStatus] = useState('idle') // idle | loading
   const [result, setResult] = useState({ open: false, type: 'success', message: '' })
+  const utmRef = useRef({})
+
+  // Ловим метки при монтировании, до любых якорных переходов по странице.
+  useEffect(() => {
+    utmRef.current = captureUtm()
+  }, [])
 
   const handleChange = (e) => {
     const { name, value } = e.target
@@ -29,6 +62,14 @@ function DownloadSection() {
     if (!form.name || !form.company || !form.phone || !form.email) return
     setStatus('loading')
 
+    const utm = utmRef.current || {}
+    // utm_source → UTM_SOURCE: стандартные UTM-поля лида в Битрикс24.
+    const utmFields = {}
+    UTM_KEYS.forEach((k) => {
+      if (utm[k]) utmFields[k.toUpperCase()] = utm[k]
+    })
+    const pageUrl = typeof window !== 'undefined' ? window.location.href : 'https://promo.estatecrm.io/ai/'
+
     try {
       const bitrixPromise = fetch(`${BITRIX_WEBHOOK}crm.lead.add.json`, {
         method: 'POST',
@@ -41,7 +82,8 @@ function DownloadSection() {
             EMAIL: [{ VALUE: form.email, VALUE_TYPE: 'WORK' }],
             PHONE: [{ VALUE: form.phone, VALUE_TYPE: 'WORK' }],
             SOURCE_ID: 'UC_RP7YY3',
-            UF_CRM_1760704782049: 'https://promo.estatecrm.io/ai/',
+            ...utmFields,
+            UF_CRM_1760704782049: pageUrl,
             UF_CRM_1738824489: 'Скачать исследование AI',
             COMMENTS: 'Источник: Лендинг «AI в девелопменте» — форма скачивания исследования',
           },
@@ -59,6 +101,8 @@ function DownloadSection() {
           consent: true,
           marketing: false,
           formType: 'report',
+          url: pageUrl,
+          utm,
         }),
       }).catch((err) => console.error('Email notification error:', err))
 
